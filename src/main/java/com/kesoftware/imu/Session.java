@@ -46,6 +46,7 @@
 */
 package com.kesoftware.imu;
 
+import javax.net.SocketFactory;
 import java.net.*;
 
 /*!
@@ -118,6 +119,26 @@ public class Session
 	}
 
 	/*!
+	 ** Creates a `Session` object with the specified ``host`` and ``port`` that uses a non-default SocketFactory.
+	 **
+	 ** @param socketFactory
+	 **   A factory used to create sockets for communicating with the IMu server.
+	 **
+	 ** @param host
+	 **   The host to connect to.
+	 **
+	 ** @param port
+	 **   The port on the host to connect on.
+	 */
+	public
+	Session(SocketFactory socketFactory, String host, int port)
+	{
+		initialise(socketFactory);
+		_host = host;
+		_port = port;
+	}
+
+	/*!
 	** Creates a `Session` object with the specified ``host``.
 	**
 	** The port to connect on will be taken from the
@@ -162,6 +183,24 @@ public class Session
 	Session()
 	{
 		initialise();
+	}
+
+	/*!
+	 ** Creates a Session object.
+	 **
+	 ** @param socketFactory
+	 **   A factory used to create sockets for communicating with the IMu server.
+	 **
+	 ** The host to connect to will be taken from the
+	 ** **defaultHost** [$<link>(:session:defaultHost)] class property.
+	 **
+	 ** The port to connect on will be taken from the
+	 ** **defaultPort** [$<link>(:session:defaultPort)] class property.
+	 */
+	public
+	Session(SocketFactory socketFactory)
+	{
+		initialise(socketFactory);
 	}
 
 	/* Properties */
@@ -284,7 +323,7 @@ public class Session
 		Trace.write(2, "connecting to %s:%d", _host, _port);
 		try
 		{
-			_socket = new Socket(_host, _port);
+			_socket = _socketFactory.createSocket(_host, _port);
 		}
 		catch (Exception e)
 		{
@@ -314,7 +353,7 @@ public class Session
 		{
 			// ignore
 		}
-		initialise();
+		initialise(_socketFactory);
 	}
 
 	/*!
@@ -492,19 +531,26 @@ public class Session
 	private String _context;
 	private String _host;
 	private int _port;
+	private SocketFactory _socketFactory;
 	private Socket _socket;
 	private Stream _stream;
 	private Boolean _suspend;
 
 	private void
-	initialise()
+	initialise(SocketFactory socketFactory)
 	{
 		_close = null;
 		_context = null;
 		_host = _defaultHost;
 		_port = _defaultPort;
+		_socketFactory = socketFactory;
 		_socket = null;
 		_stream = null;
 		_suspend = null;
+	}
+
+	private void
+	initialise() {
+		initialise(SocketFactory.getDefault());
 	}
 }
