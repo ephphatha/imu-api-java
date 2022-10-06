@@ -66,7 +66,7 @@ import java.io.*;
 **
 ** @since 1.0
 */
-class TempInputStream extends FileInputStream
+class TempInputStream extends FileInputStream implements AutoCloseable
 {
 	/* Constructors */
 	/*!
@@ -102,23 +102,6 @@ class TempInputStream extends FileInputStream
 		_file.delete();
 		_file = null;
 	}
-	
-	/*!
-	** Overrides the base class's **finalize( )** method.
-	**
-	** If close has not been called previously, the stream is closed and the 
-	** file is removed.
-	**
-	** @throws IOException
-	**   If the stream access failed.
-	*/
-	protected void
-	finalize() throws IOException
-	{
-		super.finalize();
-		if (_file != null)
-			_file.delete();
-	}
-	
+
 	private File _file;  
 }
