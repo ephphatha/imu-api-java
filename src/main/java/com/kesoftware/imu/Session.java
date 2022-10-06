@@ -217,13 +217,13 @@ public class Session
 	{
 		if (_close == null)
 			return false;
-		return _close.booleanValue();
+		return _close;
 	}
 
 	public void
 	setClose(boolean close)
 	{
-		_close = new Boolean(close);
+		_close = close;
 	}
 
 	/*!
@@ -298,13 +298,13 @@ public class Session
 	{
 		if (_suspend == null)
 			return false;
-		return _suspend.booleanValue();
+		return _suspend;
 	}
 
 	public void
 	setSuspend(boolean suspend)
 	{
-		_suspend = new Boolean(suspend);
+		_suspend = suspend;
 	}
 	
 	/* Methods */
@@ -496,7 +496,7 @@ public class Session
 
 		boolean disconnect = false;
 		if (_close != null)
-			disconnect = _close.booleanValue();
+			disconnect = _close;
 		if (disconnect)
 			disconnect();
 
