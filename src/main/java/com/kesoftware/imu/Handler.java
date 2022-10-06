@@ -119,13 +119,13 @@ public class Handler
 	{
 		if (_destroy == null)
 			return false;
-		return _destroy.booleanValue();
+		return _destroy;
 	}
 
 	public void
 	setDestroy(boolean destroy)
 	{
-		_destroy = new Boolean(destroy);
+		_destroy = destroy;
 	}
 
 	/*!
@@ -261,7 +261,7 @@ public class Handler
 				request.put("create", _create);
 		}
 		if (_destroy != null)
-			request.put("destroy", _destroy.booleanValue());
+			request.put("destroy", _destroy);
 		if (_language != null)
 			request.put("language", _language);
 
